@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="add_update_product_icon_padding">16sp</dimen>
+    <dimen name="text_field_width">250sp</dimen>
+    <dimen name="text_field_height">65sp</dimen>
+    <dimen name="et_padding">16sp</dimen>
+    <dimen name="et_textSize2">16sp</dimen>
+    <dimen name="btn_textSize">18sp</dimen>
+
+    <dimen name="item_list_marginTop">16dp</dimen>
+    <dimen name="item_list_padding">10dp</dimen>
+    <dimen name="item_image_padding">5dp</dimen>
+    <dimen name="item_image_width">60dp</dimen>
+    <dimen name="item_image_height">80dp</dimen>
+    <dimen name="item_image_title_price_marginStart">10dp</dimen>
+    <dimen name="rv_item_name_textSize">14sp</dimen>
+    <dimen name="rv_item_marginTop">2dp</dimen>
+    <dimen name="rv_item_textSize">12sp</dimen>
+    <dimen name="rv_item_price_marginTop">2dp</dimen>
+    <dimen name="rv_item_price_textSize">12sp</dimen>
+
+    <dimen name="my_party_details_content_marginStartEnd">16dp</dimen>
+    <dimen name="my_party_details_content_marginTopBottom">10dp</dimen>
+    <dimen name="my_party_details_content_lbl_padding">2dp</dimen>
+    <dimen name="my_party_details_lbl_textSize">14sp</dimen>
+    <dimen name="my_party_details_status_paddingStartEnd">10dp</dimen>
+    <dimen name="my_party_details_status_paddingTopBottom">2dp</dimen>
+    <dimen name="lbl_party_details_textSize">16sp</dimen>
+    <dimen name="my_party_details_content_paddingStartEnd">16dp</dimen>
+    <dimen name="my_party_details_content_paddingTopBottom">10dp</dimen>
+    <dimen name="my_party_details_items_receipt">16dp</dimen>
+    <dimen name="my_party_details_label_value_textSize">18sp</dimen>
+
+
+</resources>

@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,8 +20,36 @@
         android:theme="@style/Theme.Partymobile"
         tools:targetApi="31">
         <activity
+            android:name=".DisplayParty"
+            android:exported="false" />
+        <activity
+            android:name=".EditMyParty"
+            android:exported="false" />
+        <activity
+            android:name=".DisplayMyListParties"
+            android:exported="false" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity
+            android:name=".AddParty"
+            android:exported="false"
+            android:label="Add Party Details" />
+        <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:label="Login" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="Home" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:label="Splash Screen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

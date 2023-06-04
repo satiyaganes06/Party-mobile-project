@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1069074794998",
+    "project_id": "mad-mini-project-c822d",
+    "storage_bucket": "mad-mini-project-c822d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069074794998:android:a5887f206a69c3e9861fd7",
+        "android_client_info": {
+          "package_name": "com.example.party_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069074794998-sagv3u8fesbk75hq9d8mtdi76fq33800.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.party_mobile",
+            "certificate_hash": "1a6fe35cf3758a507e69112d1027e02adbbb7eb8"
+          }
+        },
+        {
+          "client_id": "1069074794998-iltcvji31juhdcnml325te58rec6rapt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYlwACwB2alLkAROC-D0MLViKRO8RuoVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069074794998-iltcvji31juhdcnml325te58rec6rapt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

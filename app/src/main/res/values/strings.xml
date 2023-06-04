@@ -1,3 +1,38 @@
 <resources>
     <string name="app_name">Party-mobile</string>
+    <string-array name="user_type_array">
+        <item>--Select user type--</item>
+        <item>Student</item>
+        <item>Lecture</item>
+        <item>Admin</item>
+        <item>News Updater</item>
+    </string-array>
+
+    <string name="party_category_prompt">--Party Category--</string>
+    <string-array name="party_category">
+        <item>--Party Category--</item>
+        <item>Birthday party</item>
+        <item>Surprise party</item>
+        <item>Dinner party</item>
+        <item>Other party</item>
+    </string-array>
+
+    <string name="party_type_prompt">--Party Type--</string>
+    <string name="content_description">Content Description</string>
+    <string name="content_description_1">Content Description</string>
+    <string name="party_name">Party Name</string>
+    <string name="add">ADD</string>
+    <string name="update">Update</string>
+    <string name="state">State</string>
+    <string name="city">City</string>
+    <string name="party_address">Party Address</string>
+    <string name="party_capacity">Party Capacity</string>
+    <string name="party_time">Party Time</string>
+    <string name="party_date">Party Date</string>
+    <string name="tel_number">Tel Number</string>
+    <string-array name="party_type">
+        <item>--Party Type--</item>
+        <item>Public</item>
+        <item>Private</item>
+    </string-array>
 </resources>
