@@ -87,11 +87,11 @@ public class EditMyParty extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_my_party);
-        setTitle("View My Party");
+        setTitle("Edit My Party");
 
-        documentID = getIntent().getStringExtra("party_id");
+        documentID = getIntent().getStringExtra("party_ID");
 
-       // fireStoreForm();
+        fireStoreForm();
 
         // calling the action bar
         ActionBar actionBar = getSupportActionBar();
@@ -238,6 +238,7 @@ public class EditMyParty extends BaseActivity {
     }
 
     public void fireStoreForm(){
+        loadingDialog.startLoadingDialog();
         mFireStore.collection("parties")
         .document(documentID)
         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -274,6 +275,8 @@ public class EditMyParty extends BaseActivity {
 
         getCategory(document.getString("party_category"));
         getType(document.getString("party_type"));
+
+        loadingDialog.dismisDialog();
     }
 
     private void updatePartyInfo(String email, String imageUrl) {
@@ -301,6 +304,8 @@ public class EditMyParty extends BaseActivity {
                     public void onSuccess(Void aVoid) {
                         loadingDialog.dismisDialog();
                         Toast.makeText(EditMyParty.this, "Party details updated successfully", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), DisplayMyListParties.class);
+                        startActivity(i);
                         finish();
 
                     }

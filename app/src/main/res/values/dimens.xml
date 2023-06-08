@@ -7,7 +7,7 @@
     <dimen name="et_textSize2">16sp</dimen>
     <dimen name="btn_textSize">18sp</dimen>
 
-    <dimen name="item_list_marginTop">16dp</dimen>
+    <dimen name="item_list_marginTop">0dp</dimen>
     <dimen name="item_list_padding">10dp</dimen>
     <dimen name="item_image_padding">5dp</dimen>
     <dimen name="item_image_width">60dp</dimen>

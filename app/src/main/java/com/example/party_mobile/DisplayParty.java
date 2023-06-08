@@ -46,8 +46,7 @@ public class DisplayParty extends BaseActivity {
     private FirebaseUser firebaseUser;
     private Uri imageUri;
     private final FirebaseFirestore mFireStore = FirebaseFirestore.getInstance();
-    private TextView tv_party_category,tv_type, tv_date, tv_time, tv_item_name, tv_address, tv_city,
-            tv_state, tv_telNum, tv_current_people, tv_total_people;
+    private TextView tv_party_category,tv_type, tv_date, tv_time, tv_item_name, tv_address, tv_city_status, tv_telNum, tv_current_people, tv_total_people;
     private ImageView iv_qr_code, iv_party_image;
     private Button btn_Update;
 
@@ -98,17 +97,17 @@ public class DisplayParty extends BaseActivity {
 //
 //        // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
-//
-//        btn_Update = findViewById(R.id.btn_Update);
-//
-//        btn_Update.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), DisplayParty.class);
-//                intent.putExtra("party_ID", documentID);
-//                startActivity(intent);
-//            }
-//        });
+
+        btn_Update = findViewById(R.id.btn_Update);
+
+        btn_Update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EditMyParty.class);
+                intent.putExtra("party_ID", document.getString("party_id"));
+                startActivity(intent);
+            }
+        });
     }
 
     public void fireStoreForm(){
@@ -142,13 +141,11 @@ public class DisplayParty extends BaseActivity {
         tv_time = findViewById(R.id.tv_time);
         tv_total_people = findViewById(R.id.tv_total_people);
         tv_current_people = findViewById(R.id.tv_current_people);
-        tv_address = findViewById(R.id.tv_address);
-        tv_state = findViewById(R.id.tv_state);
-        tv_city = findViewById(R.id.tv_city);
+        tv_address = findViewById(R.id.tv_party_address);
         tv_party_category = findViewById(R.id.tv_party_category);
+        tv_city_status = findViewById(R.id.tv_party_city_state);
         tv_type = findViewById(R.id.tv_type);
         iv_qr_code = findViewById(R.id.iv_qr);
-
 
 
         Glide.with(this)
@@ -162,8 +159,7 @@ public class DisplayParty extends BaseActivity {
         tv_total_people.setText(String.valueOf(document.get("party_max_capacity")));
         tv_current_people.setText(String.valueOf(document.get("party_current_capacity")));
         tv_address.setText(document.getString("party_address"));
-        tv_city.setText(document.getString("party_city"));
-        tv_state.setText(document.getString("party_state"));
+        tv_city_status.setText(document.getString("party_city") + ", " + document.getString("party_state"));
         tv_party_category.setText(document.getString("party_category"));
         tv_type.setText(document.getString("party_type"));
         generateQR(document.getString("party_join_code"));
@@ -197,7 +193,7 @@ public class DisplayParty extends BaseActivity {
             retVal = Settings.System.canWrite(this);
             Log.d(TAG, "Can Write Settings: " + retVal);
             if(retVal){
-                Toast.makeText(this, "Write allowed :-)", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Write allowed :-)", Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(this, "Write not allowed :-(", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
