@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "com.example.mad_mini_project.app-mergeDebugResources-42:/layout/fragment_home.xml",
+        "source": "com.example.mad_mini_project.app-main-45:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.mad_mini_project.app-mergeDebugResources-42:/layout/activity_main.xml",
+        "source": "com.example.mad_mini_project.app-main-45:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.mad_mini_project.app-mergeDebugResources-42:/layout/fragment_dashboard.xml",
+        "source": "com.example.mad_mini_project.app-main-45:/layout/fragment_dashboard.xml"
+    },
+    {
+        "merged": "com.example.mad_mini_project.app-mergeDebugResources-42:/layout/fragment_notifications.xml",
+        "source": "com.example.mad_mini_project.app-main-45:/layout/fragment_notifications.xml"
+    }
+]
