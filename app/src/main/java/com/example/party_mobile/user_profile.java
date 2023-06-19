@@ -1,4 +1,5 @@
 package com.example.party_mobile;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.party_mobile.Firebase_Model.UserModel;
+import com.example.party_mobile.Utility.LoadingDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,19 +22,24 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-public class user_profile extends AppCompatActivity {
+public class user_profile extends BaseActivity {
 
     private UserModel userModel;
 
-    private EditText firstNameEditText, lastNameEditText, studentIdEditText, emailEditText, phoneNumberEditText;
+    private EditText nameEditText, emailEditText, phoneNumberEditText, ageEditText;
     private Button saveProfileButton;
     private ImageView profileImageView;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
 
+    DocumentSnapshot document;
+
+    LoadingDialog loadingDialog = new LoadingDialog(this);
+
 //    public user_profile(String firstName, String lastName, String studentId, String email, String phoneNumber) {
 //    }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +60,8 @@ public class user_profile extends AppCompatActivity {
         currentUser = auth.getCurrentUser();
 
         // Initialize views
-        firstNameEditText = findViewById(R.id.firstNameEditText);
-        lastNameEditText = findViewById(R.id.lastNameEditText);
-        studentIdEditText = findViewById(R.id.studentIdEditText);
+        nameEditText = findViewById(R.id.nameEditText);
+        ageEditText = findViewById(R.id.ageEditText);
         emailEditText = findViewById(R.id.emailEditText);
         phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
         saveProfileButton = findViewById(R.id.saveProfileButton);
@@ -84,7 +90,7 @@ public class user_profile extends AppCompatActivity {
                         //user_profile userProfile = document.toObject(user_profile.class);
 
                         // Set the retrieved values to the corresponding views
-                        firstNameEditText.setText(document.getString(""));
+                          nameEditText.setText(docRef.get);
 //                        lastNameEditText.setText(userProfile.getLastName());
 //                        studentIdEditText.setText(userProfile.getStudentId());
 //                        emailEditText.setText(userProfile.getEmail());
@@ -95,6 +101,27 @@ public class user_profile extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void fireStoreForm(){
+        loadingDialog.startLoadingDialog();
+        mFireStore.collection("parties")
+                .document(documentID)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            document = task.getResult();
+                            if (document.exists()) {
+                                setPartyDetails();
+                            } else {
+                                Toast.makeText(EditMyParty.this, "No such document", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(EditMyParty.this, "Fail to load", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private int getPhoneNumber() {
