@@ -94,7 +94,7 @@ Button btnScan;
     }
     private void scanCode(){
         ScanOptions options = new ScanOptions();
-        options.setPrompt("Volume Up to on flash");
+        options.setPrompt("Scan the QR Code");
         options.setBeepEnabled(true);
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureAct.class);
