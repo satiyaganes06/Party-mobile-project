@@ -33,6 +33,12 @@
             android:name=".EditMyParty"
             android:exported="false" />
         <activity
+            android:name=".user_profile"
+            android:exported="false" />
+        <activity
+            android:name=".forgot_password"
+            android:exported="false" />
+        <activity
             android:name=".DisplayMyListParties"
             android:exported="false" />
         <activity
@@ -49,6 +55,12 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:label="Login" />
+        <activity
+            android:name=".LogiNPage"
+            android:exported="true" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

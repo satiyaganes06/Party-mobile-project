@@ -1,12 +1,12 @@
 package com.example.party_mobile.Firebase_Model;
 
 public class UserModel {
-    String email, name, image, userID, std_id, user_type;
+    String email, name, image, userID;
     int age, phoneNum;
 
 
 
-    public UserModel(String email, String name, String image, String std_id, String userID, String user_type,boolean isNotificationEnable) {
+    public UserModel(String email, String name, String image, String userID,  int phoneNum, int age) {
         this.email = email;
         this.name = name;
         this.image = image;
@@ -46,22 +46,6 @@ public class UserModel {
 
     public void setUserID(String userID) {
         this.userID = userID;
-    }
-
-    public String getstd_id() {
-        return std_id;
-    }
-
-    public void setStd_id(String std_id) {
-        this.std_id = std_id;
-    }
-
-    public String getUser_type() {
-        return user_type;
-    }
-
-    public void setUser_type(String user_type) {
-        this.user_type = user_type;
     }
 
     public int getAge() {

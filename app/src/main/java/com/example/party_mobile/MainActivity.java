@@ -38,6 +38,8 @@ public class MainActivity extends BaseActivity {
 
     private ArrayList<PartyDetailsModel> mPartyDetailsListItems;
 
+    TextView tv ;
+    Button btn_add_party, btn_profile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,7 @@ public class MainActivity extends BaseActivity {
         recycleview = findViewById(R.id.recycleview);
 
         btn_add_party = findViewById(R.id.btn_add_party);
+        btn_profile = findViewById(R.id.btn_profile);
 
         btn_JoinParty = findViewById(R.id.btn_JoinParty);
 
@@ -65,6 +68,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), DisplayMyListParties.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), user_profile.class);
                 startActivity(intent);
             }
         });

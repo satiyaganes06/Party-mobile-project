@@ -62,9 +62,9 @@ public class LoginActivity extends BaseActivity {
 //            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
 //        });
 
-//        txtForgetPassword.setOnClickListener(view -> {
-//            startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
-//        });
+        txtForgetPassword.setOnClickListener(view -> {
+            startActivity(new Intent(LoginActivity.this, forgot_password.class));
+        });
 
         logIn.setOnClickListener(view -> {
             if (areFieldReady()) {

@@ -32,6 +32,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
+    <style name="TextAppearance.AppCompat.Large" parent="Base.TextAppearance.AppCompat.Large"/>
+
     <style name="loadingDialogStyle">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@color/black</item>
