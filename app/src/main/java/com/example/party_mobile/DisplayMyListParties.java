@@ -69,17 +69,16 @@ public class DisplayMyListParties extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //getWishList();
         displayFunction();
     }
 
     public void displayFunction(){
+
         Query query = mFireStore.collection("parties")
                     .whereEqualTo("user_id", getCurrentUserID());
             FirestoreRecyclerOptions<PartyDetailsModel> options = new FirestoreRecyclerOptions.Builder<PartyDetailsModel>()
                     .setQuery(query, PartyDetailsModel.class)
                     .build();
-
             adapters = new FirestoreRecyclerAdapter<PartyDetailsModel, PartyViewHolder>(options) {
                 @NonNull
                 @Override

@@ -1,5 +1,6 @@
 package com.example.party_mobile;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,15 +12,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.example.party_mobile.Firebase_Model.PartyDetailsModel;
 import com.example.party_mobile.Firebase_Model.UserModel;
 import com.example.party_mobile.Utility.LoadingDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 
 public class user_profile extends BaseActivity {
@@ -27,7 +33,7 @@ public class user_profile extends BaseActivity {
     private UserModel userModel;
 
     private EditText nameEditText, emailEditText, phoneNumberEditText, ageEditText;
-    private Button saveProfileButton;
+    private Button saveProfileButton, logOutButton;
     private ImageView profileImageView;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
@@ -36,8 +42,7 @@ public class user_profile extends BaseActivity {
 
     LoadingDialog loadingDialog = new LoadingDialog(this);
 
-//    public user_profile(String firstName, String lastName, String studentId, String email, String phoneNumber) {
-//    }
+    private final FirebaseFirestore mFireStore = FirebaseFirestore.getInstance();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,19 +57,13 @@ public class user_profile extends BaseActivity {
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // Initialize Firebase
-        db = FirebaseFirestore.getInstance();
-
-        // Get the current user
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        currentUser = auth.getCurrentUser();
-
         // Initialize views
         nameEditText = findViewById(R.id.nameEditText);
         ageEditText = findViewById(R.id.ageEditText);
         emailEditText = findViewById(R.id.emailEditText);
         phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
         saveProfileButton = findViewById(R.id.saveProfileButton);
+        logOutButton = findViewById(R.id.logOutButton);
         profileImageView = findViewById(R.id.profileImageView);
 
         // Load the user profile from Firestore
@@ -76,99 +75,78 @@ public class user_profile extends BaseActivity {
                 saveUserProfile();
             }
         });
-    }
 
-    private void loadUserProfile() {
-        // Retrieve the user profile from Firestore
-        DocumentReference docRef = db.collection("users").document(currentUser.getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        //user_profile userProfile = document.toObject(user_profile.class);
-
-                        // Set the retrieved values to the corresponding views
-                          nameEditText.setText(docRef.get);
-//                        lastNameEditText.setText(userProfile.getLastName());
-//                        studentIdEditText.setText(userProfile.getStudentId());
-//                        emailEditText.setText(userProfile.getEmail());
-//                        phoneNumberEditText.setText(userProfile.getPhoneNumber());
-                    }
-                } else {
-                    Toast.makeText(user_profile.this, "Failed to load profile", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(View view) {
+                signOut();
             }
         });
     }
 
-    public void fireStoreForm(){
+    public void loadUserProfile(){
         loadingDialog.startLoadingDialog();
-        mFireStore.collection("parties")
-                .document(documentID)
+        mFireStore.collection("users")
+                .document(getCurrentUserID())
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             document = task.getResult();
                             if (document.exists()) {
-                                setPartyDetails();
+                                setUserDetails();
                             } else {
-                                Toast.makeText(EditMyParty.this, "No such document", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(user_profile.this, "No such document", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(EditMyParty.this, "Fail to load", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(user_profile.this, "Fail to load", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private int getPhoneNumber() {
-        return 0;
-    }
+    public void setUserDetails() {
 
-    private char getEmail() {
-        return 0;
-    }
+        Glide.with(this)
+                .load(document.getString("image"))
+                .into(profileImageView);
 
-    private char getStudentId() {
-        return 0;
-    }
+        nameEditText.setText(document.getString("username"));
+        ageEditText.setText(String.valueOf(document.get("age")));
+        emailEditText.setText(document.getString("email"));
+        phoneNumberEditText.setText(String.valueOf(document.get("phoneNum")));
 
-    private char getLastName() {
-        return 0;
-    }
-
-    private char getFirstName() {
-        return 0;
+        loadingDialog.dismisDialog();
     }
 
     private void saveUserProfile() {
-        String firstName = firstNameEditText.getText().toString().trim();
-        String lastName = lastNameEditText.getText().toString().trim();
-        String studentId = studentIdEditText.getText().toString().trim();
-        String email = emailEditText.getText().toString().trim();
-        String phoneNumber = phoneNumberEditText.getText().toString().trim();
+        String id= document.getString("userID");
+        String username = nameEditText.getText().toString();
+        String user_email = emailEditText.getText().toString();
+        int age = Integer.parseInt(ageEditText.getText().toString());
+        int phoneNumber = Integer.parseInt(phoneNumberEditText.getText().toString());
 
-     //   user_profile userProfile = new user_profile(firstName, lastName, studentId, email, phoneNumber);
+        UserModel userDetails = new UserModel(user_email, username,"https://cdn-icons-png.flaticon.com/512/3607/3607444.png", id, phoneNumber, age);
 
-        // Save the user profile to Firestore
-        DocumentReference docRef = db.collection("users").document(currentUser.getUid());
-        docRef.set(userModel)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+        mFireStore.collection("users")
+                .document(getCurrentUserID())
+                .set(userDetails, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(user_profile.this, "Profile saved successfully", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(user_profile.this, "Failed to save profile", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(Void aVoid) {
+                        loadingDialog.dismisDialog();
+                        Toast.makeText(user_profile.this, "User details updated successfully", Toast.LENGTH_SHORT).show();
+
+                        finish();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        loadingDialog.dismisDialog();
+                        Toast.makeText(user_profile.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        //et_address.setText(document.getString("party_address"));
-
-
     }
 }

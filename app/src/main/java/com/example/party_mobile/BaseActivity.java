@@ -2,6 +2,7 @@ package com.example.party_mobile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.content.Context;
@@ -60,5 +61,14 @@ public class BaseActivity extends AppCompatActivity{
         } else {
             return "no user";
         }
+    }
+
+    public void signOut(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(getApplicationContext(), LogiNPage.class);
+        startActivity(i);
+        finish();
+
     }
 }

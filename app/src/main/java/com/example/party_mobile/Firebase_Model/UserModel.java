@@ -6,7 +6,7 @@ public class UserModel {
 
 
 
-    public UserModel(String email, String name, String image, String userID, int age, int phoneNum) {
+    public UserModel(String email, String name, String image, String userID,  int phoneNum, int age) {
         this.email = email;
         this.name = name;
         this.image = image;

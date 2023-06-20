@@ -114,7 +114,7 @@ public class SignUpActivity extends BaseActivity {
         loadingDialog.startLoadingDialog();
 
         UserModel userDetails;
-        userDetails = new UserModel(email, name,"", user_id, phone_num, user_age);
+        userDetails = new UserModel(email, name,"https://cdn-icons-png.flaticon.com/512/3607/3607444.png", user_id, phone_num, user_age);
 
         mFireStore.collection("users")
                 .document(user_id)
