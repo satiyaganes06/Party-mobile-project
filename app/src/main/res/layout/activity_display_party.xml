@@ -251,13 +251,14 @@ tools:context=".DisplayParty">
 
 
                 <TextView
+                    android:id="@+id/tv_qr_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/textColor"
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:layout_marginBottom="5dp"
-                    android:text="yXpf"/>
+                    tools:text="yXpf"/>
 
             </LinearLayout>
 

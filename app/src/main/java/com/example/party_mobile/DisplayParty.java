@@ -46,7 +46,7 @@ public class DisplayParty extends BaseActivity {
     private FirebaseUser firebaseUser;
     private Uri imageUri;
     private final FirebaseFirestore mFireStore = FirebaseFirestore.getInstance();
-    private TextView tv_party_category,tv_type, tv_date, tv_time, tv_item_name, tv_address, tv_city_status, tv_telNum, tv_current_people, tv_total_people;
+    private TextView tv_party_category,tv_type, tv_date, tv_time, tv_item_name, tv_address, tv_city_status, tv_telNum, tv_current_people, tv_total_people, tv_qr_code;
     private ImageView iv_qr_code, iv_party_image;
     private Button btn_Update;
 
@@ -146,6 +146,7 @@ public class DisplayParty extends BaseActivity {
         tv_city_status = findViewById(R.id.tv_party_city_state);
         tv_type = findViewById(R.id.tv_type);
         iv_qr_code = findViewById(R.id.iv_qr);
+        tv_qr_code = findViewById(R.id.tv_qr_code);
 
 
         Glide.with(this)
@@ -163,6 +164,7 @@ public class DisplayParty extends BaseActivity {
         tv_party_category.setText(document.getString("party_category"));
         tv_type.setText(document.getString("party_type"));
         generateQR(document.getString("party_join_code"));
+        tv_qr_code.setText(document.getString("party_join_code"));
     }
 
     @Override

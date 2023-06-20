@@ -52,7 +52,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import org.checkerframework.checker.units.qual.A;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class AddParty extends BaseActivity {
 
@@ -79,6 +81,7 @@ public class AddParty extends BaseActivity {
     public Integer number;
 
     private Button btn_submit;
+
 
     LoadingDialog loadingDialog = new LoadingDialog(this);
 
@@ -276,10 +279,7 @@ public class AddParty extends BaseActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        loadingDialog.dismisDialog();
-                        Toast.makeText(AddParty.this, "Party was added successfully !!!", Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(i);
+                        createPartyRoom(party_join_code, documentID);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -289,6 +289,35 @@ public class AddParty extends BaseActivity {
                         Toast.makeText(AddParty.this, "Server Error", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    public void createPartyRoom(String party_join_code, String documentID){
+        mFireStore.collection("partyRoom")
+                        .document(documentID)
+                        .set(new HashMap<String, Object>() {
+                            {
+                                put("party_id", documentID);
+                                put("party_join_code", party_join_code);
+                                put("user_id_list", Arrays.asList());
+                            }
+                        })
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                loadingDialog.dismisDialog();
+                                Toast.makeText(AddParty.this, "Party was added successfully !!!", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(i);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                loadingDialog.dismisDialog();
+                                Toast.makeText(AddParty.this, "Server Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
     }
 
     public static String generateRandomID() {
