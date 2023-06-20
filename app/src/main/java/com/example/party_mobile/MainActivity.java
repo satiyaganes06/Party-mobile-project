@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity {
     private ArrayList<PartyDetailsModel> mPartyDetailsListItems;
 
     TextView tv ;
-    Button btn_add_party, btn_profile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
 
         ActionBar actionBar = getSupportActionBar();
 
-        setTitle("Homepage");
+        setTitle("Public Events/Parties ");
 
         recycleview = findViewById(R.id.recycleview);
 
