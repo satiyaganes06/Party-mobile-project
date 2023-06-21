@@ -28,13 +28,11 @@ import java.util.ArrayList;
 public class MainActivity extends BaseActivity {
 
     LoadingDialog loadingDialog = new LoadingDialog(this);
-
-
     private RecyclerView recycleview;
     private final FirebaseFirestore mFireStore = FirebaseFirestore.getInstance();
 
     private FirestoreRecyclerAdapter adapters;
-    private Button btn_add_party,btn_profile,btn_JoinParty;
+    private Button btn_add_party,btn_profile,btn_JoinParty, btn_feedback;
 
     private ArrayList<PartyDetailsModel> mPartyDetailsListItems;
 
@@ -53,8 +51,8 @@ public class MainActivity extends BaseActivity {
 
         btn_add_party = findViewById(R.id.btn_add_party);
         btn_profile = findViewById(R.id.btn_profile);
-
         btn_JoinParty = findViewById(R.id.btn_JoinParty);
+        btn_feedback = findViewById(R.id.btn_feedback);
 
         btn_JoinParty.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,11 +77,18 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        btn_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     @Override
     protected void onResume() {
         super.onResume();
-        //getWishList();
         loadingDialog.startLoadingDialog();
         displayFunction();
     }
@@ -155,13 +160,5 @@ public class MainActivity extends BaseActivity {
         }
 
     }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 }
