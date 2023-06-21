@@ -132,6 +132,7 @@ public class JoinParty extends BaseActivity {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
+                                                    incrementPartyCapacity();
                                                     loadingDialog.dismisDialog();
                                                     Toast.makeText(JoinParty.this, "Joined Party Room Successfully!", Toast.LENGTH_LONG).show();
                                                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -151,6 +152,7 @@ public class JoinParty extends BaseActivity {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
+                                                    incrementPartyCapacity();
                                                     loadingDialog.dismisDialog();
                                                     Toast.makeText(JoinParty.this, "Joined Party Room Successfully!", Toast.LENGTH_LONG).show();
                                                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -183,7 +185,22 @@ public class JoinParty extends BaseActivity {
 
 
     }
-
+    private void incrementPartyCapacity() {
+        DocumentReference partyRef = mFireStore.collection("parties").document(documentID);
+        partyRef.update("party_current_capacity", FieldValue.increment(1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Party capacity updated successfully
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to update party capacity
+                    }
+                });
+    }
     public void fireStoreForm(){
         loadingDialog.startLoadingDialog();
         mFireStore.collection("parties")
