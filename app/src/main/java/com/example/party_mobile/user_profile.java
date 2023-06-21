@@ -1,6 +1,10 @@
 package com.example.party_mobile;
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,25 +15,54 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.party_mobile.Firebase_Model.PartyDetailsModel;
 import com.example.party_mobile.Firebase_Model.UserModel;
 import com.example.party_mobile.Utility.LoadingDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 
-public class user_profile extends BaseActivity {
+public class user_profile extends BaseActivity implements SensorEventListener {
+
+    private SensorManager sensorManager;
+    private Sensor orientationSensor;
+
+    public void OrientationSensorExample(Context context) {
+        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        orientationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+    }
+
+    public void startListening() {
+        sensorManager.registerListener(this, orientationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void stopListening() {
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+            float azimuth = event.values[0];  // Azimuth (0 to 359 degrees)
+            float pitch = event.values[1];    // Pitch (-180 to 180 degrees)
+            float roll = event.values[2];     // Roll (-90 to 90 degrees)
+
+            // Do something with the orientation values
+            // e.g., update UI or perform calculations
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Do something if sensor accuracy changes
+    }
 
     private UserModel userModel;
 
@@ -149,6 +182,8 @@ public class user_profile extends BaseActivity {
                         Toast.makeText(user_profile.this, "Failed to update user details", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
     }
 
     @Override
@@ -160,4 +195,8 @@ public class user_profile extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
+
+
