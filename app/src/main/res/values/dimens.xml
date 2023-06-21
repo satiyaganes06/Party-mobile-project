@@ -30,6 +30,7 @@
     <dimen name="my_party_details_content_paddingTopBottom">10dp</dimen>
     <dimen name="my_party_details_items_receipt">16dp</dimen>
     <dimen name="my_party_details_label_value_textSize">18sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 
 </resources>

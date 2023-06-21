@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -98,6 +99,10 @@ public class DisplayParty extends BaseActivity {
 //        // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // methods to display the icon in the ActionBar
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
         btn_Update = findViewById(R.id.btn_Update);
 
         btn_Update.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +113,43 @@ public class DisplayParty extends BaseActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu ) {
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
+
+        switch (item.getItemId()){
+            case R.id.share:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, "Hello Dear! You're invited to a " + document.getString("party_category") +"\n\n" +
+                        "Party Name: "+ document.getString("party_name") + "\n" +
+                        "Party Type: "+ document.getString("party_type") + "\n" +
+                        "Date: "+ document.getString("party_date")+"\n" +
+                        "Time: "+ document.getString("party_time") +"\n" +
+                        "Current Capacity: "+ String.valueOf(document.get("party_current_capacity")) + "/" + String.valueOf(document.get("party_max_capacity")) +"\n" +
+                        "Address: "+ document.getString("party_address") + ", " + document.getString("party_city") + ", " + document.getString("party_state") +"\n\n" +
+                        "Join Party Code: "+ document.getString("party_join_code") +"\n\n" +
+                        "Please join us for a great time!");
+
+                intent.setType("text/plain");
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+
+                break;
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void fireStoreForm(){
@@ -165,16 +207,6 @@ public class DisplayParty extends BaseActivity {
         tv_type.setText(document.getString("party_type"));
         generateQR(document.getString("party_join_code"));
         tv_qr_code.setText(document.getString("party_join_code"));
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void generateQR(String code){

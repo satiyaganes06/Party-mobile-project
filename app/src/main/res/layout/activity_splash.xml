@@ -9,15 +9,17 @@
     <ImageView
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginVertical="60dp"
+        android:layout_marginVertical="30dp"
         android:layout_marginBottom="21dp"
         android:src="@drawable/lets_party"
+        android:background="@drawable/image_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.326" />
+
 
     <Button
         android:id="@+id/btnNext"
