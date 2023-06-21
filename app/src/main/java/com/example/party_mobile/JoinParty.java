@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -54,8 +55,11 @@ public class JoinParty extends BaseActivity {
 //        // calling the action bar
         ActionBar actionBar = getSupportActionBar();
         setTitle("Join Party");
-//        // showing the back button in action bar
-        actionBar.setDisplayHomeAsUpEnabled(true);
+// showing the back button in action bar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         btn_Join = findViewById(R.id.btn_Join);
 //        btn_Join.setOnClickListener(new View.OnClickListener() {
 //
@@ -88,31 +92,114 @@ public class JoinParty extends BaseActivity {
 //                        });
 //            }
 //        });
+//        btn_Join.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                DocumentReference partyRoomRef = mFireStore.collection("partyRoom").document(documentID);
+//                partyRoomRef.update("user_id_list", FieldValue.arrayUnion(getCurrentUserID()))
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                loadingDialog.dismisDialog();
+//                                Toast.makeText(JoinParty.this, "Joined Party Room Successfully!", Toast.LENGTH_LONG).show();
+//                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+//                                startActivity(i);
+//                            }
+//                        })
+//                        .addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                loadingDialog.dismisDialog();
+//                                Toast.makeText(JoinParty.this, "Server Error", Toast.LENGTH_LONG).show();
+//                            }
+//                        });
+//            }
+//        });
         btn_Join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DocumentReference partyRoomRef = mFireStore.collection("partyRoom").document(documentID);
-                partyRoomRef.update("user_id_list", FieldValue.arrayUnion(getCurrentUserID()))
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+                partyRoomRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Object userIDs = document.get("user_id_list");
+                                if (userIDs == null) {
+                                    // Array field is empty, create a new array with the current user ID
+                                    partyRoomRef.update("user_id_list", Arrays.asList(getCurrentUserID()))
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    incrementPartyCapacity();
+                                                    loadingDialog.dismisDialog();
+                                                    Toast.makeText(JoinParty.this, "Joined Party Room Successfully!", Toast.LENGTH_LONG).show();
+                                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                                    startActivity(i);
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    loadingDialog.dismisDialog();
+                                                    Toast.makeText(JoinParty.this, "Server Error", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                } else if (userIDs instanceof ArrayList) {
+                                    // Array field has existing user IDs, use arrayUnion to add the current user ID
+                                    partyRoomRef.update("user_id_list", FieldValue.arrayUnion(getCurrentUserID()))
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    incrementPartyCapacity();
+                                                    loadingDialog.dismisDialog();
+                                                    Toast.makeText(JoinParty.this, "Joined Party Room Successfully!", Toast.LENGTH_LONG).show();
+                                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                                    startActivity(i);
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    loadingDialog.dismisDialog();
+                                                    Toast.makeText(JoinParty.this, "Server Error", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                } else {
+                                    loadingDialog.dismisDialog();
+                                    Toast.makeText(JoinParty.this, "Invalid user_id_list field", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
                                 loadingDialog.dismisDialog();
-                                Toast.makeText(JoinParty.this, "Joined Party Room Successfully!", Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(i);
+                                Toast.makeText(JoinParty.this, "Such Party Doesn't Exist", Toast.LENGTH_SHORT).show();
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                loadingDialog.dismisDialog();
-                                Toast.makeText(JoinParty.this, "Server Error", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        } else {
+                            loadingDialog.dismisDialog();
+                            Toast.makeText(JoinParty.this, "Fail to load", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 
 
+    }
+    private void incrementPartyCapacity() {
+        DocumentReference partyRef = mFireStore.collection("parties").document(documentID);
+        partyRef.update("party_current_capacity", FieldValue.increment(1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Party capacity updated successfully
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to update party capacity
+                    }
+                });
     }
     public void fireStoreForm(){
         loadingDialog.startLoadingDialog();
@@ -178,4 +265,6 @@ public class JoinParty extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

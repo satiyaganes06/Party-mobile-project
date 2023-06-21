@@ -37,12 +37,15 @@ public class MainActivity extends BaseActivity {
     private ArrayList<PartyDetailsModel> mPartyDetailsListItems;
 
     TextView tv ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Homepage");
+        ActionBar actionBar = getSupportActionBar();
+
+        setTitle("Public Events/Parties ");
 
         recycleview = findViewById(R.id.recycleview);
 
