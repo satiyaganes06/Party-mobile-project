@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
 
         ActionBar actionBar = getSupportActionBar();
 
-        setTitle("Public Events/Parties ");
+        setTitle("Home Page(Public Parties)");
 
         recycleview = findViewById(R.id.recycleview);
 
