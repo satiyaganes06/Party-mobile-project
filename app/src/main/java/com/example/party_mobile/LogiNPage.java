@@ -59,34 +59,8 @@ public class LogiNPage extends AppCompatActivity {
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = loginEmail.getText().toString();
-                String pass = loginPassword.getText().toString();
-
-                if(!email.isEmpty()&& Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    if(!pass.isEmpty()){
-                        auth.signInWithEmailAndPassword(email, pass)
-                                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                    @Override
-                                    public void onSuccess(AuthResult authResult) {
-                                        Toast.makeText(LogiNPage.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(LogiNPage.this, MainActivity.class));
-                                        finish();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(LogiNPage.this,"Login Failed", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }else {
-                        loginPassword.setError("Password cannot be empty");
-                    }
-                }else if (email.isEmpty()){
-                        loginEmail.setError("Email cannot be empty");
-                    } else {
-                        loginEmail.setError("Please enter valid email");
-                    }
-                }
+                login();
+            }
 
 
         });
@@ -133,8 +107,9 @@ public class LogiNPage extends AppCompatActivity {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Intent intent = new Intent(LogiNPage.this, MainActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(LogiNPage.this, MainActivity.class);
+//                startActivity(intent);
+                login();
             }
 
             @Override
@@ -147,4 +122,35 @@ public class LogiNPage extends AppCompatActivity {
 
         return biometricPrompt;
     }
+
+    private void login(){
+        String email = loginEmail.getText().toString();
+        String pass = loginPassword.getText().toString();
+
+            if(!email.isEmpty()&& Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if(!pass.isEmpty()){
+                    auth.signInWithEmailAndPassword(email, pass)
+                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    Toast.makeText(LogiNPage.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(LogiNPage.this, MainActivity.class));
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(LogiNPage.this,"Login Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }else {
+                    loginPassword.setError("Password cannot be empty");
+                }
+            }else if (email.isEmpty()){
+                loginEmail.setError("Email cannot be empty");
+            } else {
+                loginEmail.setError("Please enter valid email");
+            }
+        }
+
 }
