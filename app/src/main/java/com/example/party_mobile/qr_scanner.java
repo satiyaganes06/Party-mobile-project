@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -39,12 +40,16 @@ public class qr_scanner extends BaseActivity implements SensorEventListener {
     private FirebaseUser firebaseUser;
     private final FirebaseFirestore mFireStore = FirebaseFirestore.getInstance();
 Button btnScan;
+Button btnJoinwithCode;
+EditText editTextPartyCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scanner);
         btnScan = findViewById(R.id.btn_Scan);
+        editTextPartyCode = findViewById(R.id.et_party_code);
+        btnJoinwithCode = findViewById(R.id.btn_codejoin);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         // calling the action bar
@@ -57,6 +62,14 @@ Button btnScan;
             @Override
             public void onClick(View view) {
                 scanCode();
+            }
+        });
+
+        btnJoinwithCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               String partyCode = editTextPartyCode.getText().toString();
+                joinWithCode(partyCode);
             }
         });
     }
@@ -101,6 +114,34 @@ Button btnScan;
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureAct.class);
         barLauncher.launch(options);
+     }
+
+     public void joinWithCode(String partyCode){
+         FirebaseFirestore db = FirebaseFirestore.getInstance();
+         db.collection("parties")
+                 .whereEqualTo("party_join_code", partyCode)
+                 .get()
+                 .addOnCompleteListener(task -> {
+                     if (task.isSuccessful()) {
+                         for (QueryDocumentSnapshot document : task.getResult()) {
+                             // Retrieve the data from the document
+                             // For example, if you have a field called "party_name":
+                             String partyID = document.getString("party_id");
+                             Intent intent = new Intent(getApplicationContext(), JoinParty.class);
+                             intent.putExtra("party_id", partyID);
+                             startActivity(intent);
+                             // Do something with the retrieved data
+//                                 AlertDialog.Builder builder = new AlertDialog.Builder(qr_scanner.this);
+//                                 builder.setTitle("Result");
+//                                 builder.setMessage("Party Name: " + partyName);
+//                                 builder.setPositiveButton("Ok", (dialogInterface, i) -> {
+//                                     dialogInterface.dismiss();
+//                                 }).show();
+                         }
+                     } else {
+                         // Handle any errors that occurred
+                     }
+                 });
      }
 
      ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
