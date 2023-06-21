@@ -61,37 +61,7 @@ public class JoinParty extends BaseActivity {
         }
 
         btn_Join = findViewById(R.id.btn_Join);
-//        btn_Join.setOnClickListener(new View.OnClickListener() {
 //
-//            @Override
-//            public void onClick(View view) {
-//                mFireStore.collection("partyRoom")
-//                        .document(documentID)
-//                        .set(new HashMap<String, Object>() {
-//                            {
-//                                put("party_id", documentID);
-//                                put("party_join_code", document.getString("party_join_code"));
-//                                put("user_id_list", Arrays.asList(getCurrentUserID()));
-//                            }
-//                        })
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                loadingDialog.dismisDialog();
-//                                Toast.makeText(JoinParty.this, "Joined Party Room Successfully !!!", Toast.LENGTH_LONG).show();
-//                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-//                                startActivity(i);
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                loadingDialog.dismisDialog();
-//                                Toast.makeText(JoinParty.this, "Server Error", Toast.LENGTH_LONG).show();
-//                            }
-//                        });
-//            }
-//        });
 //        btn_Join.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
